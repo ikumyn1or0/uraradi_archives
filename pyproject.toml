@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "uraradi-archives"
+version = "0.1.0"
+description = ""
+authors = ["ikumyn1or0 <19ming3@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "=3.9.15"
+pandas = "*"
+numpy = "*"
+streamlit = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
