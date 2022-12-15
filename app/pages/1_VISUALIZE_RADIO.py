@@ -3,8 +3,6 @@ import pandas as pd
 
 # load dataset
 
-df = pd.read_csv("./input/2022-11-26.csv")
-
 # set page config
 
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
@@ -13,9 +11,6 @@ st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
 
 st.title("📻裏ラジアーカイブス🦉")
 
-st.header("テキスト検索")
+st.header("ラジオ過去回の情報")
 
-keyword = st.text_input("キーワード", value="",)
-if st.button('検索'):
-    ret = df[df['text'].str.contains(str(keyword))]
-    st.write(ret)
+st.markdown("作成中のページです……")
