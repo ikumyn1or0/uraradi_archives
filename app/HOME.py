@@ -40,7 +40,7 @@ st.markdown(md_text2)
 
 st.header("放送済みラジオ回一覧")
 
-st.markdown("現在、総集編を除いた#34-#65の書き起こしに対応しています。")
+st.markdown("現在、総集編を除いた#25-#65の書き起こしに対応しています。")
 
 df_radio = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
 df_radio["link"] = '<a target="_blank" href='+df_radio["url"]+">"+df_radio["title"]+"</a>"
