@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import glob
+import re
+import plotly.graph_objects as go
 
 # set page config
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
@@ -42,10 +44,35 @@ st.header("放送済みラジオ回一覧")
 
 st.markdown("現在、総集編を除いた#25-#65の書き起こしに対応しています。")
 
-df_radio = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
-df_radio["link"] = '<a target="_blank" href='+df_radio["url"]+">"+df_radio["title"]+"</a>"
+# define link generate function
+def create_yt_link(yt_url, text, time=None):
+    yt_link = "https://youtu.be/" + re.search(r"v=(\S)+", yt_url).group()[2:]
+    if time is None:
+        pass
+    else:
+        yt_link = yt_link + "?t=" + str(time)
+    return f'''<a href="{yt_link}">{text}</a>'''
 
-st.write(df_radio[["date", "link"]].rename(columns={"date": "日付", "link": "タイトル"}).to_html(escape=False, index=False), unsafe_allow_html=True)
+df_radio = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
+df_radio["link"] = df_radio.apply(lambda df: create_yt_link(df["url"], df["title"]), axis=1)
+
+df_plot = df_radio[["date", "link"]].rename(columns={"date": "放送日付", "link": "タイトル"}).copy()
+
+fig = go.Figure(
+    data=[
+        go.Table(
+            columnwidth=[1, 5],
+            header=dict(
+                values=df_plot.columns.to_list()
+            ),
+            cells=dict(
+                values=df_plot.transpose(),
+                align=["center", "left"]
+            )
+        )
+    ]
+)
+st.plotly_chart(fig, use_container_width=True)
 
 # ----------
 

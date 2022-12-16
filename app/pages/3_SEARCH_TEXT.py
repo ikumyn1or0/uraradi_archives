@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import glob
 import re
+import plotly.graph_objects as go
 
 # set page config
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
@@ -36,8 +37,15 @@ for csv in csv_list:
         date_list.append(date_filename)
 
 df_radio = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
-df_radio["link"] = '<a target="_blank" href='+df_radio["url"]+">"+df_radio["title"]+"</a>"
 df_radio["is_transcripted"] = df_radio["date"].apply(lambda date: date in date_list)
+
+def create_yt_link(yt_url, text, time=None):
+    yt_link = "https://youtu.be/" + re.search(r"v=(\S)+", yt_url).group()[2:]
+    if time is None:
+        pass
+    else:
+        yt_link = yt_link + "?t=" + str(time)
+    return f'''<a href="{yt_link}">{text}</a>'''
 
 # ----------
 
@@ -80,12 +88,27 @@ if st.button('検索'):
             # 検索結果の処理
             st.markdown(f"{len(df_result)}件の検索結果が見つかりました。")
 
-            df_result["url_id"] = df_result["url"].apply(lambda url: re.search(r"v=(\S)+", url).group()[2:])
             df_result["second"] = df_result["start_h"]*60*60 + df_result["start_m"]*60 + df_result["start_s"]
-            df_result["start"] = df_result["start_h"].apply(lambda x: str(x).zfill(1)) + ":" + df_result["start_m"].apply(lambda x: str(x).zfill(2)) + ":" + df_result["start_s"].apply(lambda x: str(x).zfill(2))
-            df_result["link"] = '<a target="_blank" href=https://youtu.be/'+df_result["url_id"]+"?t="+df_result["second"].astype(str)+">"+df_result["number"]+" "+df_result["start"]+"</a>"
-            df_result = df_result.sort_values(by=["date", "second"], ascending=[False, True])
+            df_result["start"] = df_result.apply(lambda df: df["number"] + "-" + str(df["start_h"]).zfill(1) + ":" + str(df["start_m"]).zfill(2) + ":" + str(df["start_s"]).zfill(2), axis=1)
+            df_result["link"] = df_result.apply(lambda df: create_yt_link(df["url"], df["start"], df["second"]), axis=1)
+            df_result = df_result.sort_values(by=["date", "second"], ascending=[False, True]).reset_index(drop=True)
 
-            st.write(df_result[["link", "text"]].rename(columns={"link": "放送回と時間", "text": "書き起こしテキスト"}).to_html(escape=False, index=False), unsafe_allow_html=True)
+            df_plot = df_result[["link", "text"]].reset_index().rename(columns={"index": "#", "link": "放送回-再生時間", "text": "テキスト"}).copy()
+            df_plot["#"] = df_plot["#"]+1
+            fig = go.Figure(
+                data=[
+                    go.Table(
+                        columnwidth=[1, 4, 16],
+                        header=dict(
+                            values=df_plot.columns.to_list()
+                        ),
+                        cells=dict(
+                            values=df_plot.transpose(),
+                            align=["center", "center", "left"]
+                        )
+                    )
+                ]
+            )
+            st.plotly_chart(fig, use_container_width=True)
 
 # ----------
