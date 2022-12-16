@@ -95,20 +95,21 @@ if st.button('検索'):
 
             df_plot = df_result[["link", "text"]].reset_index().rename(columns={"index": "#", "link": "放送回-再生時間", "text": "テキスト"}).copy()
             df_plot["#"] = df_plot["#"]+1
-            fig = go.Figure(
-                data=[
-                    go.Table(
-                        columnwidth=[1, 4, 16],
-                        header=dict(
-                            values=df_plot.columns.to_list()
-                        ),
-                        cells=dict(
-                            values=df_plot.transpose(),
-                            align=["center", "center", "left"]
-                        )
-                    )
-                ]
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            st.write(df_plot.to_html(escape=False, index=False), unsafe_allow_html=True)
+            # fig = go.Figure(
+            #     data=[
+            #         go.Table(
+            #             columnwidth=[1, 4, 16],
+            #             header=dict(
+            #                 values=df_plot.columns.to_list()
+            #             ),
+            #             cells=dict(
+            #                 values=df_plot.transpose(),
+            #                 align=["center", "center", "left"]
+            #             )
+            #         )
+            #     ]
+            # )
+            # st.plotly_chart(fig, use_container_width=True)
 
 # ----------

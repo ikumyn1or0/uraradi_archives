@@ -59,21 +59,22 @@ if df_radio[df_radio["title"]==title].reset_index(drop=True).loc[0, "is_transcri
 
     # st.write(df_transcripted[["link", "text"]].rename(columns={"link": "時間", "text": "書き起こしテキスト"}).to_html(escape=False, index=False), unsafe_allow_html=True)
     df_plot = df_transcripted[["link", "text"]].rename(columns={"link": "再生時間", "text": "テキスト"}).copy()
-    fig = go.Figure(
-        data=[
-            go.Table(
-                columnwidth=[1, 5],
-                header=dict(
-                    values=df_plot.columns.to_list()
-                ),
-                cells=dict(
-                    values=df_plot.transpose(),
-                    align=["center", "left"]
-                )
-            )
-        ]
-    )
-    st.plotly_chart(fig, use_container_width=True)
+    st.write(df_plot.to_html(escape=False, index=False), unsafe_allow_html=True)
+    # fig = go.Figure(
+    #     data=[
+    #         go.Table(
+    #             columnwidth=[1, 5],
+    #             header=dict(
+    #                 values=df_plot.columns.to_list()
+    #             ),
+    #             cells=dict(
+    #                 values=df_plot.transpose(),
+    #                 align=["center", "left"]
+    #             )
+    #         )
+    #     ]
+    # )
+    # st.plotly_chart(fig, use_container_width=True)
 
 else:
     st.markdown("この回はまだ書き起こしテキストを追加できていません......")

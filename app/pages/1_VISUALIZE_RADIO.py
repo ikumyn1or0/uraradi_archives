@@ -35,28 +35,31 @@ df_radio = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
 df_radio = df_radio[~df_radio["number"].str.contains("総集編")].reset_index(drop=True)
 df_radio["hour"] = (df_radio["length"]/3600).round(2)
 df_radio["caption"] = df_radio["number"].apply(lambda x: x[3:])
-df_radio["link"] = df_radio.apply(lambda df: create_yt_link(df["url"], df["title"]), axis=1)
+df_radio["link"] = df_radio.apply(lambda df: create_yt_link(df["url"], df["number"]), axis=1)
 
 fig = px.line(df_radio, x="date", y="hour", text="caption", markers=True, labels={"date": "放送日付", "hour": "放送時間(h)", "caption": "放送回"})
 fig.update_traces(line_color="#0c8ea6", textposition="bottom center")
 st.plotly_chart(fig, use_container_width=True)
 
-df_plot = df_radio[["date", "hour", "link"]].rename(columns={"date": "放送日付", "hour": "放送時間(h)", "link":"タイトル"}).copy()
+df_plot = df_radio[["date", "hour", "number"]].rename(columns={"date": "放送日付", "hour": "放送時間(h)", "number":"タイトル"}).copy()
 
-fig = go.Figure(
-    data=[
-        go.Table(
-            columnwidth=[1, 1, 5],
-            header=dict(
-                values=df_plot.columns.to_list()
-            ),
-            cells=dict(
-                values=df_plot.transpose(),
-                align=["center", "center", "left"]
-            )
-        )
-    ]
-)
-st.plotly_chart(fig, use_container_width=True)
+st.dataframe(df_plot)
+# st.write(df_plot.to_html(escape=False, index=False), unsafe_allow_html=True)
+
+# fig = go.Figure(
+#     data=[
+#         go.Table(
+#             columnwidth=[1, 1, 5],
+#             header=dict(
+#                 values=df_plot.columns.to_list()
+#             ),
+#             cells=dict(
+#                 values=df_plot.transpose(),
+#                 align=["center", "center", "left"]
+#             )
+#         )
+#     ]
+# )
+# st.plotly_chart(fig, use_container_width=True)
 
 # ----------

@@ -58,21 +58,23 @@ df_radio["link"] = df_radio.apply(lambda df: create_yt_link(df["url"], df["title
 
 df_plot = df_radio[["date", "link"]].rename(columns={"date": "放送日付", "link": "タイトル"}).copy()
 
-fig = go.Figure(
-    data=[
-        go.Table(
-            columnwidth=[1, 5],
-            header=dict(
-                values=df_plot.columns.to_list()
-            ),
-            cells=dict(
-                values=df_plot.transpose(),
-                align=["center", "left"]
-            )
-        )
-    ]
-)
-st.plotly_chart(fig, use_container_width=True)
+st.write(df_plot.to_html(escape=False, index=False), unsafe_allow_html=True)
+
+# fig = go.Figure(
+#     data=[
+#         go.Table(
+#             columnwidth=[1, 5],
+#             header=dict(
+#                 values=df_plot.columns.to_list()
+#             ),
+#             cells=dict(
+#                 values=df_plot.transpose(),
+#                 align=["center", "left"]
+#             )
+#         )
+#     ]
+# )
+# st.plotly_chart(fig, use_container_width=True)
 
 # ----------
 
