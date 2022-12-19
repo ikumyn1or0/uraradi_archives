@@ -1,115 +1,92 @@
 import streamlit as st
 import pandas as pd
-import glob
-import re
-import plotly.graph_objects as go
+import plotly.express as px
+import plotly.colors as pc
 
-# set page config
+import myfunc
+
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
 
-########################
-# describe page contents
-########################
-
 st.title("📻裏ラジアーカイブス🦉")
-
-# ----------
 
 st.header("テキスト検索")
 
 md_text1 = """
 書き起こしたテキストからキーワードを検索することができます。
 
-書き起こしの精度があまり高くないため、キーワードが全て検索結果にヒットするとは限りません。いろいろなキーワードを試すか、テキスト全文表示を活用ください。
+「放送回 再生時間」のリンクに飛ぶことで、その回の再生時間からラジオを再生できます。
 
-「放送回と時間」のリンクに飛ぶことで、その回の再生時間からラジオを再生できます。
+書き起こしの精度が高くないため、狙ったキーワードが全てヒットするとは限りません。書き起こしテキストの傾向もご参考ください。
 """
 st.markdown(md_text1)
 
-# ----------
+with st.expander("書き起こしテキストの傾向"):
+    md_text2 = """
+    - 「大浦るかこ」「あにまーれ」などの人名や固有名詞は、認識精度が低いか、原文とは異なる表記で認識されていることが多いです。
+    - 一般用語ではない単語は、ひらがなやカタカナのみで表記されていることが多いです。
+    - 固有名詞以外の文章は認識精度が高いです。
+    - ラジオ冒頭・最後のBGMがノイズとして影響され、本来発話していない部分でも何かしら発話していると誤認識されていることがあります。
+    - 書き起こしテキストの傾向を理解するために、全文検索を活用ください。
+    """
+    st.markdown(md_text2)
 
-csv_list = glob.glob("./input/*.csv")
-date_list = []
-for csv in csv_list:
-    date_filename = csv.split("/")[-1]
-    date_filename = date_filename.split(".")[0]
-    if date_filename != "playlist_裏ラジオウルナイト":
-        date_list.append(date_filename)
-
-df_radio = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
-df_radio["is_transcripted"] = df_radio["date"].apply(lambda date: date in date_list)
-
-def create_yt_link(yt_url, text, time=None):
-    yt_link = "https://youtu.be/" + re.search(r"v=(\S)+", yt_url).group()[2:]
-    if time is None:
-        pass
-    else:
-        yt_link = yt_link + "?t=" + str(time)
-    return f'''<a href="{yt_link}">{text}</a>'''
-
-# ----------
+date_list = myfunc.get_transcripted_csv_list()
+df_radio = myfunc.load_radio_dataset(create_bool_transcripted=True)
 
 keyword = st.text_input("キーワード", value="",)
 
-# ----------
+clicked = st.button("検索", type="primary")
 
-if st.button('検索'):
+if clicked:
     if len(keyword)  <= 0:
-        # 検索キーワード長に関するエラー出力
         st.markdown("キーワードは1文字以上でお願いします。")
     else:
-        # create empty dataframe object
-        df_result = pd.read_csv(f"./input/{date_list[0]}.csv")
-        url_c = df_radio[df_radio["date"]==date_list[0]].reset_index(drop=True).loc[0, "url"]
-        number_c = df_radio[df_radio["date"]==date_list[0]].reset_index(drop=True).loc[0, "number"]
-        df_result["url"] = url_c
-        df_result["number"] = number_c
-        df_result["date"] = date_list[0]
+        temp_date = date_list[0]
+        temp_index_radio = (df_radio["date"].values == temp_date).argmax()
+        temp_url = df_radio.loc[temp_index_radio, "url"]
+        temp_number = df_radio.loc[temp_index_radio, "number"]
+
+        df_result = myfunc.load_transcripted_dataset(temp_date, create_hms=True)
+        df_result["url"] = temp_url
+        df_result["number"] = temp_number
+        df_result["date"] = temp_date
         df_result = df_result.iloc[0:0].copy()
 
-        # search all radio date
         for date in date_list:
-            df_transcripted = pd.read_csv(f"./input/{date}.csv")
-            url = df_radio[df_radio["date"]==date].reset_index(drop=True).loc[0, "url"]
-            number = df_radio[df_radio["date"]==date].reset_index(drop=True).loc[0, "number"]
+            df_transcripted = myfunc.load_transcripted_dataset(date, create_hms=True)
+            index_radio = (df_radio["date"].values == date).argmax()
+            url = df_radio.loc[index_radio, "url"]
+            number = df_radio.loc[index_radio, "number"]
             df_transcripted["url"] = url
             df_transcripted["number"] = number
             df_transcripted["date"] = date
+            df_result_date = df_transcripted[df_transcripted['text'].str.contains(str(keyword))]
 
-            # append search result to dataframe
-            df_result = pd.concat([df_result, df_transcripted[df_transcripted['text'].str.contains(str(keyword))].copy()])
+            df_result = pd.concat([df_result, df_result_date.copy()])
 
         df_result = df_result.reset_index(drop=True)
 
         if len(df_result) == 0:
-            # 検索結果が0拳の際の処理
-            st.markdown("一致するキーワードが見つかりませんでした......")
+            st.markdown("一致するキーワードが見つかりませんでした。")
         else:
-            # 検索結果の処理
             st.markdown(f"{len(df_result)}件の検索結果が見つかりました。")
 
-            df_result["second"] = df_result["start_h"]*60*60 + df_result["start_m"]*60 + df_result["start_s"]
-            df_result["start"] = df_result.apply(lambda df: df["number"] + "-" + str(df["start_h"]).zfill(1) + ":" + str(df["start_m"]).zfill(2) + ":" + str(df["start_s"]).zfill(2), axis=1)
-            df_result["link"] = df_result.apply(lambda df: create_yt_link(df["url"], df["start"], df["second"]), axis=1)
-            df_result = df_result.sort_values(by=["date", "second"], ascending=[False, True]).reset_index(drop=True)
+            df_result["linktext"] = df_result["number"] + " " + df_result["start_hms"]
+            df_result["link"] = df_result.apply(lambda df: myfunc.create_youtube_link_html(url, linktext=df["linktext"], time=df["start_s"]), axis=1)
 
-            df_plot = df_result[["link", "text"]].reset_index().rename(columns={"index": "#", "link": "放送回-再生時間", "text": "テキスト"}).copy()
-            df_plot["#"] = df_plot["#"]+1
+            df_result = df_result.sort_values(by=["date", "start_s"], ascending=[False, 
+            True]).reset_index(drop=True)
+            df_result = df_result.reset_index()
+            df_result["index"] = df_result["index"] + 1
+
+            table_columns = {"index": "#", "link": "放送回 再生時間", "text": "テキスト"}
+
+            df_plot = df_result[table_columns.keys()].rename(columns=table_columns).copy()
+            fig = px.histogram(df_result, x="number", category_orders=dict(number=df_result["number"].unique().tolist()[::-1]), labels={"number": "放送回"}, height=200, color_discrete_sequence=[pc.label_rgb(pc.hex_to_rgb("#137D9C"))])
+            fig.update_layout(margin=dict(t=20, b=0, l=0, r=0))
+            fig.update_xaxes(tickangle=90)
+            st.plotly_chart(fig)
+
             st.write(df_plot.to_html(escape=False, index=False), unsafe_allow_html=True)
-            # fig = go.Figure(
-            #     data=[
-            #         go.Table(
-            #             columnwidth=[1, 4, 16],
-            #             header=dict(
-            #                 values=df_plot.columns.to_list()
-            #             ),
-            #             cells=dict(
-            #                 values=df_plot.transpose(),
-            #                 align=["center", "center", "left"]
-            #             )
-            #         )
-            #     ]
-            # )
-            # st.plotly_chart(fig, use_container_width=True)
 
 # ----------
