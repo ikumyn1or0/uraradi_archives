@@ -1,2 +1,3 @@
 .venv/
 poetry.lock
+app/__pycache__/
