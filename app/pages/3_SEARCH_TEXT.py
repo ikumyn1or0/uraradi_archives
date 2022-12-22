@@ -85,7 +85,7 @@ if clicked:
             fig = px.histogram(df_result, x="number", category_orders=dict(number=df_result["number"].unique().tolist()[::-1]), labels={"number": "放送回"}, height=200, color_discrete_sequence=[pc.label_rgb(pc.hex_to_rgb("#137D9C"))])
             fig.update_layout(margin=dict(t=20, b=0, l=0, r=0))
             fig.update_xaxes(tickangle=90)
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
             st.write(df_plot.to_html(escape=False, index=False), unsafe_allow_html=True)
 
