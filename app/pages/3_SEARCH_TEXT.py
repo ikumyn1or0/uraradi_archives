@@ -79,8 +79,6 @@ if clicked:
             df_result = df_result.reset_index()
             df_result["index"] = df_result["index"] + 1
 
-            st.dataframe(df_result)
-
             table_columns = {"index": "#", "link": "放送回 再生時間", "text": "テキスト"}
 
             df_plot = df_result[table_columns.keys()].rename(columns=table_columns).copy()

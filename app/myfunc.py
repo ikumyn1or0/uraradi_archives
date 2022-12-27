@@ -3,11 +3,9 @@ import glob
 import pandas as pd
 
 def get_transcripted_csv_list(include_path=False, include_extension=False):
-    csv_path_list = glob.glob("./input/*.csv")
+    csv_path_list = glob.glob("./input/transcript/*.csv")
     file_list = []
     for csv_path in csv_path_list:
-        if "playlist_裏ラジオウルナイト" in csv_path:
-            continue
         filename = csv_path
         if not include_path:
             filename = filename.split("/")[-1]
@@ -69,7 +67,7 @@ def load_radio_dataset(except_clip=False, create_link_html=False, linktext="titl
         return df
 
 def load_transcripted_dataset(date, create_hms=False):
-    df = pd.read_csv(f"./input/{date}.csv")
+    df = pd.read_csv(f"./input/transcript/{date}.csv")
     if create_hms:
         df["start_hms"] = df["start_s"].apply(lambda x: str(int(x/3600)).zfill(1)+":"+str(int((x%3600)/60)).zfill(2)+":"+str(x%60).zfill(2))
         df["end_hms"] = df["end_s"].apply(lambda x: str(int(x/3600)).zfill(1)+":"+str(int((x%3600)/60)).zfill(2)+":"+str(x%60).zfill(2))
