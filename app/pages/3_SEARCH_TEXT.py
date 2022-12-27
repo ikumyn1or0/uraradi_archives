@@ -72,12 +72,14 @@ if clicked:
             st.markdown(f"{len(df_result)}件の検索結果が見つかりました。")
 
             df_result["linktext"] = df_result["number"] + " " + df_result["start_hms"]
-            df_result["link"] = df_result.apply(lambda df: myfunc.create_youtube_link_html(url, linktext=df["linktext"], time=df["start_s"]), axis=1)
+            df_result["link"] = df_result.apply(lambda df: myfunc.create_youtube_link_html(df["url"], linktext=df["linktext"], time=df["start_s"]), axis=1)
 
             df_result = df_result.sort_values(by=["date", "start_s"], ascending=[False, 
             True]).reset_index(drop=True)
             df_result = df_result.reset_index()
             df_result["index"] = df_result["index"] + 1
+
+            st.dataframe(df_result)
 
             table_columns = {"index": "#", "link": "放送回 再生時間", "text": "テキスト"}
 
