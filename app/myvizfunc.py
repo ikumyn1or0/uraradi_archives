@@ -76,6 +76,7 @@ def show_violinplot_radio_length(tabs, guest_class_type, target_guest_list=[]) -
             0 : "それ以外の回"
         }
         df["class"] = df[target_guest_list].astype(int).sum(axis=1).clip(lower=0, upper=1)
+        df["class"] = df["class"].replace(guest_class)
     elif guest_class_type == 2:
         guest_class = {
             2 : "選択したゲスト回",
