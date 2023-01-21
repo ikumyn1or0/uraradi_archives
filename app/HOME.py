@@ -30,7 +30,7 @@ with st.expander("展開して表示"):
 st.subheader("更新情報")
 
 md_text2 = """
-2023年1月19日現在、#01-#68の書き起こしに対応しています。
+2023年1月21日現在、#01-#69の書き起こしに対応しています。
 
 ソースコードは[こちら](https://github.com/ikumyn1or0/uraradi_archives)から。
 
