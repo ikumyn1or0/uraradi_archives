@@ -44,7 +44,7 @@ def show_lineplot_radio_length(tabs, window=None) -> None:
         df["datetime"] = pd.to_datetime(df["date"])
         df = df.groupby(pd.Grouper(key="datetime", freq=window)).mean(numeric_only=True)
         df["date"] = df.index.astype(str)
-        df["number"] = df["date"].apply(lambda x: x[2:4]+"年"+x[5:7]+"月～")
+        df["number"] = df["date"].apply(lambda x: x[2:4] + "年" + x[5:7] + "月～")
         df = df.sort_values(by="date", ascending=False).reset_index(drop=True)
 
     columns = {"date": "放送日付", "hour": "放送時間(h)", "number": "放送回"}
@@ -66,22 +66,22 @@ def show_violinplot_radio_length(tabs, guest_class_type, target_guest_list=[]) -
     df["with_guest"] = df[guest_list].astype(int).sum(axis=1) > 0
     if guest_class_type == 0 or (guest_class_type in [1, 2] and len(target_guest_list) in [0, len(guest_list)]):
         guest_class = {
-            1 : "ゲストあり回",
-            0 : "ゲストなし回"
+            1: "ゲストあり回",
+            0: "ゲストなし回"
         }
         df["class"] = df["with_guest"].astype(int).replace(guest_class)
     elif guest_class_type == 1:
         guest_class = {
-            1 : "選択したゲスト回",
-            0 : "それ以外の回"
+            1: "選択したゲスト回",
+            0: "それ以外の回"
         }
         df["class"] = df[target_guest_list].astype(int).sum(axis=1).clip(lower=0, upper=1)
         df["class"] = df["class"].replace(guest_class)
     elif guest_class_type == 2:
         guest_class = {
-            2 : "選択したゲスト回",
-            1 : "その他ゲスト回",
-            0 : "ゲストなし回"
+            2: "選択したゲスト回",
+            1: "その他ゲスト回",
+            0: "ゲストなし回"
         }
         df["class"] = df["with_guest"].astype(int)
         df["class"] = df["class"].mask(df[target_guest_list].astype(int).sum(axis=1) > 0, 2)
@@ -110,7 +110,6 @@ def select_and_show_full_transcript() -> None:
     target_title = st.selectbox("表示したい過去回を選択してください。", df["title"])
     target_index = (df["title"].values == target_title).argmax()
 
-
     if df.loc[target_index, "is_transcripted"]:
         target_date = df.loc[target_index, "date"]
         target_url = df.loc[target_index, "url"]
@@ -118,11 +117,11 @@ def select_and_show_full_transcript() -> None:
         df_transcripted = mydatafunc.get_transcript_dataset(target_date)
         target_length = df.loc[target_index, "length_s"]
         timemin = time(minute=0, second=0)
-        timemax = time(hour=int(target_length/3600), minute=int((target_length%3600)/60)+1, second=0)
+        timemax = time(hour=int(target_length / 3600), minute=int((target_length % 3600) / 60) + 1, second=0)
         timerange = st.slider("表示する再生時間を指定できます。", value=(timemin, timemax), min_value=timemin, max_value=timemax, step=timedelta(minutes=1), format="H:mm:SS")
 
-        min_s = timerange[0].hour*3600 + timerange[0].minute*60 + timerange[0].second
-        max_s = timerange[1].hour*3600 + timerange[1].minute*60 + timerange[1].second
+        min_s = timerange[0].hour * 3600 + timerange[0].minute * 60 + timerange[0].second
+        max_s = timerange[1].hour * 3600 + timerange[1].minute * 60 + timerange[1].second
 
         df_transcripted = df_transcripted[(df_transcripted["start_s"] >= min_s) & (df_transcripted["end_s"] <= max_s)]
 
@@ -142,7 +141,7 @@ def search_and_show_transcript(keyword) -> None:
     date_list = mydatafunc.get_transcript_list()
     df_radio, _ = mydatafunc.get_radio_dataset()
 
-    if len(keyword)  <= 0:
+    if len(keyword) <= 0:
         st.markdown("キーワードは1文字以上でお願いします。")
     else:
         temp_date = date_list[0]
@@ -178,8 +177,7 @@ def search_and_show_transcript(keyword) -> None:
             df_result["linktext"] = df_result["number"] + " " + df_result["start_hms"]
             df_result["link"] = df_result.apply(lambda df: mydatafunc.create_youtube_html_link(df["url"], link_text=df["linktext"], time=df["start_s"]), axis=1)
 
-            df_result = df_result.sort_values(by=["date", "start_s"], ascending=[False, 
-            True]).reset_index(drop=True)
+            df_result = df_result.sort_values(by=["date", "start_s"], ascending=[False, True]).reset_index(drop=True)
             df_result = df_result.reset_index()
             df_result["index"] = df_result["index"] + 1
 

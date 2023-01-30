@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 
 # set page config
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")

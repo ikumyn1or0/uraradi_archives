@@ -1,7 +1,6 @@
 import streamlit as st
 
 import myvizfunc
-import mydatafunc
 
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
 

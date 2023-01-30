@@ -1,10 +1,5 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-import plotly.colors as pc
-
 import myvizfunc
-import mydatafunc
 
 st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
 

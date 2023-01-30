@@ -11,6 +11,7 @@ pandas = "*"
 numpy = "*"
 streamlit = "*"
 plotly = "*"
+flake8 = "*"
 
 
 [build-system]

@@ -3,7 +3,7 @@ import glob
 import pandas as pd
 
 
-def get_transcript_list(include_extension:bool=False) -> list:
+def get_transcript_list(include_extension: bool = False) -> list:
     """
     書き起こしテキストのファイル名を取得
 
@@ -31,7 +31,7 @@ def get_transcript_list(include_extension:bool=False) -> list:
     return filename_list
 
 
-def create_youtube_html_link(youtube_url:str, link_text:str, time:int=None) -> str:
+def create_youtube_html_link(youtube_url: str, link_text: str, time: int = None) -> str:
     """
     yourubeのurlからhtml用のリンクを作成する
 
@@ -59,7 +59,7 @@ def create_youtube_html_link(youtube_url:str, link_text:str, time:int=None) -> s
 
 
 # ラジオの一覧データをpandasで取得する
-def get_radio_dataset(except_clip:bool=False) -> pd.DataFrame:
+def get_radio_dataset(except_clip: bool = False) -> pd.DataFrame:
     """
     放送済みラジオの一覧をpandas DataFrame形式で取得
 
@@ -77,7 +77,7 @@ def get_radio_dataset(except_clip:bool=False) -> pd.DataFrame:
     df = pd.read_csv("./input/playlist_裏ラジオウルナイト.csv")
 
     # 放送時間をhour単位で取得
-    df["hour"] = (df["length_s"]/3600).round(4)
+    df["hour"] = (df["length_s"] / 3600).round(4)
 
     # 書き起こし済みかを取得
     transcript_list = get_transcript_list(include_extension=False)
@@ -121,7 +121,7 @@ def get_radio_dataset(except_clip:bool=False) -> pd.DataFrame:
     return df, guest_list
 
 
-def get_transcript_dataset(filename:str) -> pd.DataFrame:
+def get_transcript_dataset(filename: str) -> pd.DataFrame:
     """
     放送済みラジオの一覧をpandas DataFrame形式で取得
 
@@ -136,8 +136,8 @@ def get_transcript_dataset(filename:str) -> pd.DataFrame:
         書き起こしテキスト
     """
     df = pd.read_csv(f"./input/transcript/{filename}.csv")
-    df["start_hms"] = df["start_s"].apply(lambda x: str(int(x/3600)).zfill(1)+":"+str(int((x%3600)/60)).zfill(2)+":"+str(x%60).zfill(2))
-    df["end_hms"] = df["end_s"].apply(lambda x: str(int(x/3600)).zfill(1)+":"+str(int((x%3600)/60)).zfill(2)+":"+str(x%60).zfill(2))
+    df["start_hms"] = df["start_s"].apply(lambda x: str(int(x / 3600)).zfill(1) + ":" + str(int((x % 3600) / 60)).zfill(2) + ":" + str(x % 60).zfill(2))
+    df["end_hms"] = df["end_s"].apply(lambda x: str(int(x / 3600)).zfill(1) + ":" + str(int((x % 3600) / 60)).zfill(2) + ":" + str(x % 60).zfill(2))
 
     return df
 
@@ -150,7 +150,7 @@ def aggregate_radio_hour_by_date(df_radio, agg_by):
     else:
         df_result = df.groupby(pd.Grouper(key="datetime", freq=agg_by)).mean(numeric_only=True)
         df_result["date"] = df_result.index.astype(str)
-        df_result["number"] = df_result["date"].apply(lambda x: x[2:4]+"年"+x[5:7]+"月から")
+        df_result["number"] = df_result["date"].apply(lambda x: x[2:4] + "年" + x[5:7] + "月から")
         df_result = df_result.reset_index(drop=True)
     df_result = df_result.sort_values(by="date", ascending=False).reset_index(drop=True)
     return df_result[["number", "hour", "date"]]

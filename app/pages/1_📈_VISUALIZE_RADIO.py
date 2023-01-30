@@ -1,6 +1,4 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
 import plotly.colors as pc
 
 import myvizfunc
@@ -30,7 +28,7 @@ TIMESERIES_AGG_TYPE = {
     "月単位": 2,
     "3ヶ月単位": 3,
     "1年単位": 4
-    }
+}
 
 ts_agg_key = st.selectbox("データを集計したい単位を選択してください。", TIMESERIES_AGG_TYPE.keys())
 window = None
