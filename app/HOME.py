@@ -1,39 +1,46 @@
 import streamlit as st
+import Visualize as myv
 
-import myvizfunc
 
-st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
+myv.set_uraradi_page_config()
 
-st.title("📻裏ラジアーカイブス🦉")
 
 md_text1 = """
-このサイトは、774.inc・有閑喫茶あにまーれ所属のVTuber[大浦るかこ](https://www.youtube.com/@Rukako_Oura)さんが金曜日25時から放送中のラジオ[裏ラジオウルナイト（裏ラジ）](https://youtube.com/playlist?list=PLShwbdwZFm3r77Bwrr1quz2CpqJc6BZVL)に関する情報をまとめたファンサイトです。
+本サイトは、774.inc・有閑喫茶あにまーれ所属VTuber[大浦るかこ](https://www.youtube.com/@Rukako_Oura)さんが、金曜日25時から放送中のラジオ「[裏ラジオウルナイト（裏ラジ）](https://youtube.com/playlist?list=PLShwbdwZFm3r77Bwrr1quz2CpqJc6BZVL)」に関するファンサイトです。
 
-文字起こしAIの[Whisper](https://openai.com/blog/whisper/)がラジオの音声を書き起こしたテキストデータを利用できます。
-
-サイドバーの各ページからは以下のような機能を利用することができます。（のんびりと機能追加中です！）
-
-- **VISUALIZE RADIO**: 裏ラジのデータを可視化したグラフ
-- **VIEW FULL TEXT**: 書き起こしデータの全文表示
-- **SEARCH TEXT**: 書き起こしデータのテキスト検索
-- **ABOUT**: ラジオ・パーソナリティ・使用したAI技術に関する紹介
+文字起こしAIの[Whisper](https://openai.com/blog/whisper/)によるラジオ音声の書き起こしテキストも利用できます。
 """
 
 st.markdown(md_text1)
 
+
+st.subheader("各ページの内容")
+
+md_text2 = """
+サイドバーから以下のページに飛ぶことができます。（現在のんびりと機能追加中です！）
+
+- **VISUALIZE RADIO**: 裏ラジのデータの可視化
+- **VIEW FULL TEXT**: 書き起こしテキストの全文表示
+- **SEARCH TEXT**: 書き起こしテキストのテキスト検索
+- **ABOUT**: ラジオ・パーソナリティ・使用したAI技術などに関する紹介
+"""
+st.markdown(md_text2)
+
+
 st.subheader("過去放送回の一覧")
 
 with st.expander("展開して表示"):
-    myvizfunc.show_radio_date_title()
+    myv.display_radio_list()
 
-st.subheader("更新情報")
 
-md_text2 = """
+st.subheader("更新情報・その他")
+
+md_text3 = """
 2023年1月21日現在、#01-#69の書き起こしに対応しています。
 
-ソースコードは[こちら](https://github.com/ikumyn1or0/uraradi_archives)から。
+本サイトにおいて「（ラジオが放送される）日付」とは金曜日のことを指します。
 
-このサイトに関する質問・バグの報告などは[@mega_ebi](https://twitter.com/mega_ebi)までお願いします。
+本サイトに関する質問・バグの報告などは[@mega_ebi](https://twitter.com/mega_ebi)までお願いします。ソースコードは[こちら](https://github.com/ikumyn1or0/uraradi_archives)。
 """
 
-st.markdown(md_text2)
+st.markdown(md_text3)

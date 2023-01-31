@@ -1,13 +1,12 @@
 import streamlit as st
+import Visualize as myv
 
-# set page config
-st.set_page_config(page_title="裏ラジアーカイブス", page_icon="🦉")
 
-st.title("📻裏ラジアーカイブス🦉")
+myv.set_uraradi_page_config()
 
 # ----------
 
-st.header("詳細情報")
+st.header("👀ABOUT")
 
 tab1, tab2 = st.tabs(["ラジオについて", "AIについて"])
 
