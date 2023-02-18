@@ -1,5 +1,5 @@
 import streamlit as st
-import Visualize as myv
+import Visualize_old as myv
 
 
 myv.set_uraradi_page_config()

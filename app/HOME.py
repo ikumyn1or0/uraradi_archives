@@ -1,8 +1,7 @@
 import streamlit as st
-import Visualize as myv
+import Visualize as myviz
 
-
-myv.set_uraradi_page_config()
+myviz.set_uraradi_config()
 
 
 md_text1 = """
@@ -10,12 +9,10 @@ md_text1 = """
 
 文字起こしAIの[Whisper](https://openai.com/blog/whisper/)によるラジオ音声の書き起こしテキストも利用できます。
 """
-
 st.markdown(md_text1)
 
 
 st.subheader("各ページの内容")
-
 md_text2 = """
 サイドバーから以下のページに飛ぶことができます。（現在のんびりと機能追加中です！）
 
@@ -28,19 +25,16 @@ st.markdown(md_text2)
 
 
 st.subheader("過去放送回の一覧")
-
 with st.expander("展開して表示"):
-    myv.display_radio_list()
+    myviz.show_radios()
 
 
 st.subheader("更新情報・その他")
-
 md_text3 = """
-2023年2月14日現在、#01-#71の書き起こしに対応しています。
+2023年2月18日現在、#01-#72の書き起こしに対応しています。
 
 本サイトにおいて「（ラジオが放送される）日付」とは金曜日のことを指します。
 
 本サイトに関する質問・バグの報告などは[@mega_ebi](https://twitter.com/mega_ebi)までお願いします。ソースコードは[こちら](https://github.com/ikumyn1or0/uraradi_archives)。
 """
-
 st.markdown(md_text3)
