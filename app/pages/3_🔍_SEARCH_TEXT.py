@@ -1,8 +1,8 @@
-import Visualize_old as myv
+import Visualize as myviz
 import streamlit as st
 
 
-myv.set_uraradi_page_config()
+myviz.set_uraradi_config()
 
 
 st.header("🔍SEARCH TEXT")
@@ -19,8 +19,6 @@ st.markdown(md_text1)
 
 
 keyword = st.text_input("キーワード", value="")
-
 clicked = st.button("検索", type="primary")
-
 if clicked:
-    myv.display_text_search_result(keyword)
+    myviz.show_transcript_search(keyword)

@@ -1,6 +1,7 @@
 import streamlit as st
 import Visualize as myviz
 
+
 myviz.set_uraradi_config()
 
 
@@ -16,10 +17,10 @@ st.subheader("各ページの内容")
 md_text2 = """
 サイドバーから以下のページに飛ぶことができます。（現在のんびりと機能追加中です！）
 
-- **VISUALIZE RADIO**: 裏ラジのデータの可視化
-- **VIEW FULL TEXT**: 書き起こしテキストの全文表示
-- **SEARCH TEXT**: 書き起こしテキストのテキスト検索
-- **ABOUT**: ラジオ・パーソナリティ・使用したAI技術などに関する紹介
+- **📈VISUALIZE RADIO**: 裏ラジのデータの可視化
+- **📃VIEW FULL TEXT**: 書き起こしテキストの全文表示
+- **🔍SEARCH TEXT**: 書き起こしテキストのテキスト検索
+- **👀ABOUT**: ラジオ・パーソナリティ・使用したAI技術などに関する紹介
 """
 st.markdown(md_text2)
 

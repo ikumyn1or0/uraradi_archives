@@ -1,4 +1,5 @@
 import Data as mydata
+import datetime
 import pandas as pd
 import plotly.colors as pc
 import plotly.express as px
@@ -252,3 +253,93 @@ def show_violinplot_of_length():
         st.markdown("放送時間に関する可視化において、総集編は除外しています。")
         st.dataframe(df, use_container_width=True)
         show_download_button(df, "guest_and_length.csv")
+
+
+def show_full_transcript():
+    radiolist = load_RadioList_from_sessionstate()
+    transcriptlist = load_TranscriptList_from_sessionstate()
+
+    radio_dict = {}
+    for radioinfo in radiolist.RadioInfos:
+        radio_dict[radioinfo.title] = radioinfo.date
+    selected_title = st.selectbox("表示したい放送回を選択してください。", radio_dict.keys())
+    selected_date = radio_dict[selected_title]
+    selected_radio = radiolist.get_radioinfo_in(selected_date)
+    selected_transcript = transcriptlist.get_transcript_in(selected_date)
+
+    lowerrange_t = datetime.time(hour=0, minute=0, second=0)
+    upperrange_t = mydata.from_seconds_to_time(selected_radio.length_s)
+    selected_range_t = st.slider("表示する再生時間を絞り込むことができます。",
+                                 value=(lowerrange_t, upperrange_t),
+                                 min_value=lowerrange_t,
+                                 max_value=upperrange_t,
+                                 step=datetime.timedelta(minutes=1),
+                                 format="H:mm:SS")
+    lowerrange_s = mydata.from_time_to_seconds(selected_range_t[0])
+    upperrange_s = mydata.from_time_to_seconds(selected_range_t[1])
+
+    table = []
+    table_column = ["start_s",
+                    "再生時間",
+                    "テキスト"]
+    for text in selected_transcript.texts:
+        if lowerrange_s <= text.start_s and text.end_s <= upperrange_s:
+            row = [text.start_s,
+                   mydata.create_html_link(selected_radio.get_youtube_url(second=text.start_s),
+                                           mydata.from_seconds_to_hms_format(text.start_s)),
+                   text.text]
+            table.append(row)
+    df = pd.DataFrame(table, columns=table_column)
+    df = df.sort_values(by="start_s", ascending=True).reset_index(drop=True)
+    df = df.drop("start_s", axis=1)
+    st.write(df.to_html(escape=False,
+                        index=False,
+                        col_space={"再生時間": '110px'},
+                        justify="center"),
+             unsafe_allow_html=True)
+
+
+def show_transcript_search(keyword):
+    radiolist = load_RadioList_from_sessionstate()
+    transcriptlist = load_TranscriptList_from_sessionstate()
+    table = []
+    table_column = ["date",
+                    "start_s",
+                    "title",
+                    "再生時間",
+                    "テキスト"]
+    for transcript in transcriptlist.Transcripts:
+        radioinfo = radiolist.get_radioinfo_in(transcript.date)
+        for text in transcript.texts:
+            if keyword in text.text:
+                link = radioinfo.get_shorten_title() + " " + mydata.from_seconds_to_hms_format(text.start_s)
+                row = [transcript.date,
+                       text.start_s,
+                       radioinfo.get_shorten_title(),
+                       mydata.create_html_link(radioinfo.get_youtube_url(second=text.start_s),
+                                               link),
+                       text.text]
+                table.append(row)
+    df = pd.DataFrame(table, columns=table_column)
+    df = df.sort_values(by=["date", "start_s"], ascending=[False, True]).reset_index(drop=True)
+
+    with st.expander("放送回ごとの検索結果"):
+        hist_df = df[["date", "title"]].copy()
+        hist_df = hist_df.sort_values(by="date").reset_index(drop=True)
+        hist_df["title"] = "裏ラジ" + hist_df["title"]
+        fig = px.histogram(hist_df,
+                           x="title",
+                           height=250)
+        st.plotly_chart(fig, use_container_width=True)
+
+    st.markdown(f"{len(df)}件の結果が見つかりました。")
+    df = df.drop(["date", "start_s", "title"], axis=1)
+    if len(df) >= 10000:
+        st.markdown("検索結果が10000件以上のため、表示項目を制限しています。")
+        df = df.head(10000)
+
+    st.write(df.to_html(escape=False,
+                        index=False,
+                        col_space={"再生時間": '110px'},
+                        justify="center"),
+             unsafe_allow_html=True)

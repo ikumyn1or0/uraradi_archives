@@ -1,5 +1,6 @@
 import csv
 import dataclasses
+import datetime
 import glob
 import pandas as pd
 import re
@@ -35,6 +36,17 @@ def from_seconds_to_hms_format(seconds: int) -> str:
     minutes = int((seconds - hours * 3600) / 60)
     seconds = int(seconds % 60)
     return f"{hours}:{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
+
+
+def from_seconds_to_time(seconds: int) -> datetime.time:
+    hours = int(seconds / 3600)
+    minutes = int((seconds - hours * 3600) / 60)
+    seconds = int(seconds % 60)
+    return datetime.time(hours, minutes, seconds)
+
+
+def from_time_to_seconds(time: datetime.time) -> int:
+    return time.hour * 3600 + time.minute * 60 + time.second
 
 
 def get_transcripted_date() -> list[str]:
@@ -114,6 +126,12 @@ class RadioList:
             guests.extend(radioinfo.guests)
         return list(set(guests))
 
+    def get_radioinfo_in(self, date):
+        for radioinfo in self.RadioInfos:
+            if date == radioinfo.date:
+                break
+        return radioinfo
+
 
 @dataclasses.dataclass(frozen=True)
 class Text:
@@ -135,8 +153,8 @@ class Transcript:
                 if i == 0:
                     csv_columns = row
                 else:
-                    start_s = row[csv_columns.index("start_s")]
-                    end_s = row[csv_columns.index("end_s")]
+                    start_s = int(row[csv_columns.index("start_s")])
+                    end_s = int(row[csv_columns.index("end_s")])
                     text = row[csv_columns.index("text")]
                     self.texts.append(Text(start_s, end_s, text))
 
@@ -150,3 +168,9 @@ class TranscriptList:
         self.dates = get_transcripted_date()
         for date in self.dates:
             self.Transcripts.append(Transcript(date))
+
+    def get_transcript_in(self, date):
+        for transcript in self.Transcripts:
+            if date == transcript.date:
+                break
+        return transcript

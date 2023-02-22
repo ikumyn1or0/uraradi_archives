@@ -1,18 +1,18 @@
 import streamlit as st
-import Visualize_old as myv
+import Visualize as myviz
 
 
-myv.set_uraradi_page_config()
+myviz.set_uraradi_config()
 
-# ----------
 
 st.header("👀ABOUT")
 
+
 tab1, tab2 = st.tabs(["ラジオについて", "AIについて"])
+
 
 with tab1:
     st.subheader("裏ラジオウルナイトについて")
-
     md_text1 = """
     - ラジオの再生リストは[こちら](https://youtube.com/playlist?list=PLShwbdwZFm3r77Bwrr1quz2CpqJc6BZVL)
     - 概ね金曜日25:00からYouTubeで放送中の深夜ラジオ。
@@ -25,10 +25,7 @@ with tab1:
     """
     st.markdown(md_text1)
 
-    # ----------
-
     st.subheader("VTuber大浦るかこについて")
-
     md_text2 = """
     - [YouTubeリンク](https://www.youtube.com/@Rukako_Oura)および[Twitterのリンク](https://twitter.com/Rukako_Oura)はこちら。
     - 以下、初配信時の自己紹介・プロフィールを引用。
@@ -57,9 +54,9 @@ with tab1:
 """
     st.markdown(md_text2)
 
+
 with tab2:
     st.subheader("Whisperについて")
-
     md_text3 = """
     - 人工知能を研究するアメリカの非営利団体[OpenAI](https://openai.com/)が2022年9月に公開した音声認識システム。
     - Web上から収集した68万時間分のデータを学習に用いており、音声データを入力とする以下のようなタスクに対応することができる。
@@ -70,10 +67,7 @@ with tab2:
     """
     st.markdown(md_text3)
 
-    # ----------
-
     st.subheader("このサイトでの活用について")
-
     md_text4 = """
     - [裏ラジ#65「いまどこにいるの、AI」](https://youtu.be/SgmH7uaE-ac)を受け、最新のAIを使って何かしら作りたいと思い、作成に至った。
     - 画像生成AI（[Stable Diffusion](https://stablediffusionweb.com/), etc...）や文章生成AI（[GPT-3](https://github.com/openai/gpt-3), etc...）は広く知れ渡っており、多くの活用例が見られるが、今回はWhisperという音声処理タスクに特化したAIモデルを触ってみたいと思った。実際、今回のサイト作成で音声認識AIの現在地ともいえるWhisperに関する様々な知見を得ることができた。
