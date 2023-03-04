@@ -103,7 +103,9 @@ class RadioInfo:
 
     def get_shorten_title(self):
         shorten_title = ""
-        if self.is_clip:
+        if "#74" in self.title:
+            shorten_title = "#74"
+        elif self.is_clip:
             shorten_title = self.title[5:15]
         else:
             shorten_title = self.title[4:7]
@@ -127,10 +129,13 @@ class RadioList:
         return list(set(guests))
 
     def get_radioinfo_in(self, date):
-        for radioinfo in self.RadioInfos:
-            if date == radioinfo.date:
-                break
-        return radioinfo
+        if date not in self.dates:
+            return None
+        else:
+            for radioinfo in self.RadioInfos:
+                if date == radioinfo.date:
+                    break
+            return radioinfo
 
 
 @dataclasses.dataclass(frozen=True)
@@ -170,7 +175,10 @@ class TranscriptList:
             self.Transcripts.append(Transcript(date))
 
     def get_transcript_in(self, date):
-        for transcript in self.Transcripts:
-            if date == transcript.date:
-                break
-        return transcript
+        if date not in self.dates:
+            return None
+        else:
+            for transcript in self.Transcripts:
+                if date == transcript.date:
+                    break
+            return transcript

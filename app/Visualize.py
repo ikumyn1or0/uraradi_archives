@@ -266,37 +266,41 @@ def show_full_transcript():
     selected_date = radio_dict[selected_title]
     selected_radio = radiolist.get_radioinfo_in(selected_date)
     selected_transcript = transcriptlist.get_transcript_in(selected_date)
+    # st.write(selected_transcript)
 
-    lowerrange_t = datetime.time(hour=0, minute=0, second=0)
-    upperrange_t = mydata.from_seconds_to_time(selected_radio.length_s)
-    selected_range_t = st.slider("表示する再生時間を絞り込むことができます。",
-                                 value=(lowerrange_t, upperrange_t),
-                                 min_value=lowerrange_t,
-                                 max_value=upperrange_t,
-                                 step=datetime.timedelta(minutes=1),
-                                 format="H:mm:SS")
-    lowerrange_s = mydata.from_time_to_seconds(selected_range_t[0])
-    upperrange_s = mydata.from_time_to_seconds(selected_range_t[1])
+    if selected_transcript is None:
+        st.markdown("書き起こしを追加できていません。")
+    else:
+        lowerrange_t = datetime.time(hour=0, minute=0, second=0)
+        upperrange_t = mydata.from_seconds_to_time(selected_radio.length_s)
+        selected_range_t = st.slider("表示する再生時間を絞り込むことができます。",
+                                     value=(lowerrange_t, upperrange_t),
+                                     min_value=lowerrange_t,
+                                     max_value=upperrange_t,
+                                     step=datetime.timedelta(minutes=1),
+                                     format="H:mm:SS")
+        lowerrange_s = mydata.from_time_to_seconds(selected_range_t[0])
+        upperrange_s = mydata.from_time_to_seconds(selected_range_t[1])
 
-    table = []
-    table_column = ["start_s",
-                    "再生時間",
-                    "テキスト"]
-    for text in selected_transcript.texts:
-        if lowerrange_s <= text.start_s and text.end_s <= upperrange_s:
-            row = [text.start_s,
-                   mydata.create_html_link(selected_radio.get_youtube_url(second=text.start_s),
-                                           mydata.from_seconds_to_hms_format(text.start_s)),
-                   text.text]
-            table.append(row)
-    df = pd.DataFrame(table, columns=table_column)
-    df = df.sort_values(by="start_s", ascending=True).reset_index(drop=True)
-    df = df.drop("start_s", axis=1)
-    st.write(df.to_html(escape=False,
-                        index=False,
-                        col_space={"再生時間": '110px'},
-                        justify="center"),
-             unsafe_allow_html=True)
+        table = []
+        table_column = ["start_s",
+                        "再生時間",
+                        "テキスト"]
+        for text in selected_transcript.texts:
+            if lowerrange_s <= text.start_s and text.end_s <= upperrange_s:
+                row = [text.start_s,
+                       mydata.create_html_link(selected_radio.get_youtube_url(second=text.start_s),
+                                               mydata.from_seconds_to_hms_format(text.start_s)),
+                       text.text]
+                table.append(row)
+        df = pd.DataFrame(table, columns=table_column)
+        df = df.sort_values(by="start_s", ascending=True).reset_index(drop=True)
+        df = df.drop("start_s", axis=1)
+        st.write(df.to_html(escape=False,
+                            index=False,
+                            col_space={"再生時間": '110px'},
+                            justify="center"),
+                 unsafe_allow_html=True)
 
 
 def show_transcript_search(keyword):
