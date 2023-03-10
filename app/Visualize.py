@@ -175,7 +175,7 @@ def show_lineplot_of_length():
                                       b=0,
                                       l=0,
                                       r=0))
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
 
     with tab_data:
         st.markdown("放送時間に関する可視化において、総集編は除外しています。")
@@ -333,7 +333,8 @@ def show_transcript_search(keyword):
         hist_df["title"] = "裏ラジ" + hist_df["title"]
         fig = px.histogram(hist_df,
                            x="title",
-                           height=250)
+                           height=250,
+                           color_discrete_sequence=PLOTLY_COLOR_THEME)
         st.plotly_chart(fig, use_container_width=True)
 
     st.markdown(f"{len(df)}件の結果が見つかりました。")
