@@ -416,6 +416,7 @@ def show_wordcloud_of_radio():
                                regexp=r"[\w']+",
                                colormap="viridis",
                                mask=image,
+                               prefer_horizontal=0.5,
                                font_path="./input/wordcloud/NotoSansJP-Medium.otf").generate(" ".join(result_list))
             fig, ax = plt.subplots(figsize=(9, 12), facecolor="black")
             fig.subplots_adjust(hspace=0., wspace=0.)
