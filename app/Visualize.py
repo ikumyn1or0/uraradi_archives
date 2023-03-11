@@ -6,9 +6,10 @@ import plotly.express as px
 import streamlit as st
 
 
-PLOTLY_COLOR_THEME = [pc.label_rgb(pc.hex_to_rgb("#137D9C")),
-                      pc.label_rgb(pc.hex_to_rgb("#b0b210")),
-                      pc.label_rgb(pc.hex_to_rgb("#13465d"))]
+PLOTLY_COLOR_THEME = [pc.label_rgb(pc.hex_to_rgb("#39ABED")),
+                      pc.label_rgb(pc.hex_to_rgb("#CDC582")),
+                      pc.label_rgb(pc.hex_to_rgb("#993f36"))]
+GRAPH_BG_COLOR = "#112C42"
 
 
 def set_uraradi_config():
@@ -92,7 +93,9 @@ def show_histogram_of_length():
         fig.update_layout(margin=dict(t=20,
                                       b=0,
                                       l=0,
-                                      r=0))
+                                      r=0),
+                          plot_bgcolor=GRAPH_BG_COLOR,
+                          paper_bgcolor=GRAPH_BG_COLOR)
         st.plotly_chart(fig, use_container_width=True)
 
     with tab_data:
@@ -174,7 +177,9 @@ def show_lineplot_of_length():
         fig.update_layout(margin=dict(t=20,
                                       b=0,
                                       l=0,
-                                      r=0))
+                                      r=0),
+                          plot_bgcolor=GRAPH_BG_COLOR,
+                          paper_bgcolor=GRAPH_BG_COLOR)
         st.plotly_chart(fig, use_container_width=True)
 
     with tab_data:
@@ -246,7 +251,9 @@ def show_violinplot_of_length():
                         color_discrete_sequence=PLOTLY_COLOR_THEME)
         fig.update_traces(jitter=0.3)
         fig.update_layout(showlegend=False,
-                          margin=dict(t=20, b=0, l=0, r=0))
+                          margin=dict(t=20, b=0, l=0, r=0),
+                          plot_bgcolor=GRAPH_BG_COLOR,
+                          paper_bgcolor=GRAPH_BG_COLOR)
         st.plotly_chart(fig, use_container_width=True)
 
     with tab_data:
