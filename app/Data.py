@@ -103,12 +103,12 @@ class RadioInfo:
 
     def get_shorten_title(self):
         shorten_title = ""
-        if "#74" in self.title:
-            shorten_title = "#74"
+        if self.date > "2023-03-01":
+            shorten_title = re.search("｜\S+ 裏ラジ", self.title).group()[1:-4]
         elif self.is_clip:
             shorten_title = self.title[5:15]
         else:
-            shorten_title = self.title[4:7]
+            shorten_title = re.search(r"^【\S+】", self.title).group()[4:-1]
         return shorten_title
 
 

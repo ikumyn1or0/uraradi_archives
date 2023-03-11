@@ -269,7 +269,7 @@ def show_full_transcript():
     # st.write(selected_transcript)
 
     if selected_transcript is None:
-        st.markdown("書き起こしを追加できていません。")
+        st.markdown("書き起こしデータの追加までお待ちください。")
     else:
         lowerrange_t = datetime.time(hour=0, minute=0, second=0)
         upperrange_t = mydata.from_seconds_to_time(selected_radio.length_s)
