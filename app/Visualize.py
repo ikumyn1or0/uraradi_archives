@@ -1,9 +1,15 @@
 import Data as mydata
 import datetime
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import PIL
 import plotly.colors as pc
 import plotly.express as px
+import spacy
 import streamlit as st
+import urllib
+from wordcloud import WordCloud, ImageColorGenerator
 
 
 PLOTLY_COLOR_THEME = [pc.label_rgb(pc.hex_to_rgb("#39ABED")),
@@ -355,3 +361,64 @@ def show_transcript_search(keyword):
                         col_space={"再生時間": '110px'},
                         justify="center"),
              unsafe_allow_html=True)
+
+
+def show_wordcloud_of_radio():
+    radiolist = load_RadioList_from_sessionstate()
+    transcriptlist = load_TranscriptList_from_sessionstate()
+    radio_dict = {}
+    for radioinfo in radiolist.RadioInfos:
+        radio_dict[radioinfo.title] = radioinfo.date
+    selected_title = st.selectbox("表示したい放送回を選択してください。", radio_dict.keys())
+    selected_date = radio_dict[selected_title]
+    selected_transcript = transcriptlist.get_transcript_in(selected_date)
+
+    if selected_transcript is None:
+        st.markdown("書き起こしデータの追加までお待ちください。")
+    WORDCLOUD_PLOT_STYLE = {"通常": 0,
+                            "🦉": 1}
+    plt_key = st.radio("表示オプションを選択してください。", WORDCLOUD_PLOT_STYLE.keys(), disabled=(selected_transcript is None))
+    plt_style = WORDCLOUD_PLOT_STYLE[plt_key]
+
+    if st.button("ワードクラウドの生成(2分程度)", disabled=(selected_transcript is None)):
+        progress_percent = 0. / len(selected_transcript.texts)
+        pgbar = st.progress(progress_percent, f"{np.round(progress_percent*100, 1)}%完了")
+        nlp = spacy.load("ja_ginza")
+        result_list = []
+        for i, text in enumerate(selected_transcript.texts, start=1):
+            for sent in nlp(text.text).sents:
+                for token in sent:
+                    if token.tag_.startswith("名詞"):
+                        result_list.append(token.text)
+            progress_percent = i / len(selected_transcript.texts)
+            pgbar.progress(progress_percent, f"{np.round(progress_percent*100, 1)}%完了")
+
+        slothlib_file = urllib.request.urlopen('http://svn.sourceforge.jp/svnroot/slothlib/CSharp/Version1/SlothLib/NLP/Filter/StopWord/word/Japanese.txt')
+        stopwords = [line.decode("utf-8").strip() for line in slothlib_file]
+        stopwords = [ss for ss in stopwords if not ss == u'']
+
+        if plt_style == 0:
+            result = WordCloud(width=800,
+                               height=600,
+                               stopwords=stopwords,
+                               regexp=r"[\w']+",
+                               colormap="viridis",
+                               font_path="./input/wordcloud/NotoSansJP-Medium.otf").generate(" ".join(result_list))
+            fig, ax = plt.subplots(figsize=(8, 6), facecolor="black")
+            fig.subplots_adjust(hspace=0., wspace=0.)
+            ax.imshow(result, interpolation='bilinear')
+            ax.axis("off")
+        else:
+            image = np.array(PIL.Image.open("./input/wordcloud/body.jpg"))
+            result = WordCloud(width=900,
+                               height=1200,
+                               stopwords=stopwords,
+                               regexp=r"[\w']+",
+                               colormap="viridis",
+                               mask=image,
+                               font_path="./input/wordcloud/NotoSansJP-Medium.otf").generate(" ".join(result_list))
+            fig, ax = plt.subplots(figsize=(9, 12), facecolor="black")
+            fig.subplots_adjust(hspace=0., wspace=0.)
+            ax.imshow(result.recolor(color_func=ImageColorGenerator(image)), interpolation='bilinear')
+            ax.axis("off")
+        st.pyplot(fig)

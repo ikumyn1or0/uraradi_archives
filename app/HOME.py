@@ -12,30 +12,26 @@ md_text1 = """
 """
 st.markdown(md_text1)
 
+with st.expander("更新情報"):
+    md_text2 = """
+- 2023年3月11日、#74.5の書き起こしを追加しました。
+- 2023年3月11日、ワードクラウド可視化機能を追加しました。
+"""
+    st.markdown(md_text2)
+
 
 st.subheader("各ページの内容")
-md_text2 = """
+md_text3 = """
 サイドバーから以下のページに飛ぶことができます。（現在のんびりと機能追加中です！）
 
 - **📈VISUALIZE RADIO**: 裏ラジの放送履歴の可視化
+- **🔠VISUALIZE TEXT**: 書き起こしテキストの可視化
 - **📃VIEW FULL TEXT**: 書き起こしテキストの全文表示
 - **🔍SEARCH TEXT**: 書き起こしテキストのワード検索
-- **👀ABOUT**: 裏ラジやWhisper等に関する紹介
+- **👀ABOUT**: 裏ラジ、Whisper、本サイトに関しての情報
 """
-st.markdown(md_text2)
+st.markdown(md_text3)
 
 
 st.subheader("過去放送回の一覧")
-with st.expander("展開して表示"):
-    myviz.show_radios()
-
-
-st.subheader("更新情報・その他")
-md_text3 = """
-2023年3月11日現在、#01-#74.5の書き起こしに対応しています。
-
-本サイトにおける「日付」とは、一般的に金曜日の日付を表します。
-
-本サイトに関する質問・バグの報告などは[@mega_ebi](https://twitter.com/mega_ebi)までお願いします。本サイトのソースコードは[こちら](https://github.com/ikumyn1or0/uraradi_archives)。
-"""
-st.markdown(md_text3)
+myviz.show_radios()
