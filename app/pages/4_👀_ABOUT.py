@@ -8,7 +8,7 @@ myviz.set_uraradi_config()
 st.header("👀ABOUT")
 
 
-tab_radio, tab_oura, tab_whisper = st.tabs(["ラジオについて", "大浦るかこについて", "Whisperについて"])
+tab_radio, tab_oura, tab_whisper = st.tabs(["📻ラジオについて", "🦉大浦るかこについて", "🤖Whisperについて"])
 
 
 with tab_radio:
@@ -79,7 +79,9 @@ with tab_whisper:
     st.markdown(md_text3)
 
     # st.subheader("このサイトでのWhisperの活用について")
-    # st.markdown("[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://colab.research.google.com/gist/eqs/610095e8ab207d633ecc04ecb52a4a77/DPGMM.ipynb)")
+    # st.markdown("[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step1_playlist_to_csv.ipynb)")
+    # st.markdown("[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step2_csv_to_mp3.ipynb)")
+    # st.markdown("[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step3_mp3_to_transcript.ipynb)")
 
     st.subheader("このサイトの作成にあたって")
     md_text4 = """

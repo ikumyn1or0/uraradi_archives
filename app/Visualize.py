@@ -32,7 +32,7 @@ def load_TranscriptList_from_sessionstate():
 
 
 def show_tabs_for_graph_and_data():
-    return st.tabs(["グラフ", "データ"])
+    return st.tabs(["📊グラフ", "📒データ"])
 
 
 def show_download_button(df, file_name):
