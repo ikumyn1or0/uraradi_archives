@@ -2,7 +2,10 @@ import Visualize as myviz
 import streamlit as st
 
 
-myviz.set_uraradi_config()
+import setting as mysetting
+
+
+mysetting.set_site_config()
 
 
 st.header("🔍SEARCH TEXT")

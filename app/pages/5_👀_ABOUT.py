@@ -1,8 +1,10 @@
 import streamlit as st
-import Visualize as myviz
 
 
-myviz.set_uraradi_config()
+import setting as mysetting
+
+
+mysetting.set_site_config()
 
 
 st.header("👀ABOUT")

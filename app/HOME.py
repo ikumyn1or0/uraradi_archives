@@ -1,8 +1,11 @@
 import streamlit as st
-import Visualize as myviz
 
 
-myviz.set_uraradi_config()
+import setting as mysetting
+import table as mytable
+
+
+mysetting.set_site_config()
 
 
 md_text1 = """
@@ -14,8 +17,9 @@ st.markdown(md_text1)
 
 with st.expander("更新情報"):
     md_text2 = """
-- 2023年3月11日、#74.5の書き起こしを追加しました。
-- 2023年3月11日、ワードクラウド可視化機能を追加しました。
+- 2023/03/18:チャットコメント全文表示機能を追加しました。
+- 2023/03/11:#74.5の書き起こしを追加しました。
+- 2023/03/11:ワードクラウド可視化機能を追加しました。
 """
     st.markdown(md_text2)
 
@@ -26,7 +30,7 @@ md_text3 = """
 
 - **📈VISUALIZE RADIO**: 裏ラジの放送履歴の可視化
 - **🔠VISUALIZE TEXT**: 書き起こしテキストの可視化
-- **📃VIEW FULL TEXT**: 書き起こしテキストの全文表示
+- **📃VIEW FULL TEXT**: 書き起こしテキストとチャットテキストの全文表示
 - **🔍SEARCH TEXT**: 書き起こしテキストのワード検索
 - **👀ABOUT**: 裏ラジ、Whisper、本サイトに関しての情報
 """
@@ -34,4 +38,4 @@ st.markdown(md_text3)
 
 
 st.subheader("過去放送回の一覧")
-myviz.show_radios()
+mytable.plot_radio()
