@@ -23,25 +23,26 @@ def plot_radio():
              unsafe_allow_html=True,)
 
 
-def sloder_for_length_filter(date: str):
+def sloder_for_length_filter(date: str, disabled: bool = False):
     radiolist = mysetting.load_RadioList()
     radio = radiolist.get_radio_in(date)
 
     min_value_default = datetime.time(hour=0, minute=0, second=0)
-    max_value_default = myutil.seconds_to_time(min(30 * 60, radio.get_length()))
+    max_value_default = myutil.seconds_to_time(radio.get_length())
     min_value = datetime.time(hour=0, minute=0, second=0)
     max_value = myutil.seconds_to_time(radio.get_length())
     target_range = st.slider("表示する再生時間を絞り込んでください。",
                              value=(min_value_default, max_value_default),
                              min_value=min_value, max_value=max_value,
-                             step=datetime.timedelta(seconds=1),
-                             format="H:mm:ss")
+                             step=datetime.timedelta(minutes=1),
+                             format="H:mm:ss",
+                             disabled=disabled)
     return [myutil.time_to_seconds(target_range[0]),
             myutil.time_to_seconds(target_range[1])]
 
 
 def plot_transcript_chat():
-    columns_dict = {"timestamplink": "再生時間",
+    columns_dict = {"text_type": " ", "timestamplink": "再生時間",
                     "text": "テキスト"}
     timestamp_col_name = columns_dict["timestamplink"]
 
@@ -50,16 +51,26 @@ def plot_transcript_chat():
     target_date = title_date_selector[target_title]
 
     target_text_key = st.radio(label="表示するデータを選択してください。", options=myconfig.TEXT_DATA_SELECTOR.keys())
-    target_text_type = myconfig.TEXT_DATA_SELECTOR[target_text_key]
+    target_text_style = myconfig.TEXT_DATA_SELECTOR[target_text_key]
 
-    target_range = sloder_for_length_filter(target_date)
+    flag_plottable = mypreprocess.able_to_plot_textdata(target_date, target_text_style)
 
-    df = mypreprocess.get_df_of_timestamplink_text(target_date, target_text_type, target_range)
-    df = df[columns_dict.keys()]
-    df = df.rename(columns=columns_dict)
-    df = df.reset_index(drop=True)
-    st.write(df.to_html(escape=False,
-                        index=False,
-                        col_space={timestamp_col_name: '110px'},
-                        justify="center"),
-             unsafe_allow_html=True)
+    target_range = sloder_for_length_filter(target_date, disabled=not flag_plottable)
+
+    if flag_plottable:
+        df = mypreprocess.get_df_of_timestamplink_text(target_date, target_text_style, target_range)
+        df = df[columns_dict.keys()]
+        df = df.rename(columns=columns_dict)
+        if len(df) > myconfig.MAX_ROWS:
+            st.markdown(f"表示する件数を全{len(df)}件中{myconfig.MAX_ROWS}件に制限しています。")
+        else:
+            st.markdown(f"全{len(df)}件を表示しています。")
+        df = mypreprocess.limit_dataframe_rows(df, myconfig.MAX_ROWS)
+        df = df.reset_index(drop=True)
+        st.write(df.to_html(escape=False,
+                            index=False,
+                            col_space={timestamp_col_name: '110px'},
+                            justify="center"),
+                 unsafe_allow_html=True)
+    else:
+        st.markdown("データの追加までお待ちください。")

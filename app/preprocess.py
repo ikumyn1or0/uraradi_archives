@@ -1,6 +1,7 @@
 import pandas as pd
 
 
+import config as myconfig
 import setting as mysetting
 import util as myutil
 
@@ -28,36 +29,56 @@ def get_dict_of_date_title():
     return result_dict
 
 
-def get_df_of_timestamplink_text(date, text_type, range_s):
+def able_to_plot_textdata(date, text_type):
+    if text_type in [0, 2]:
+        if date not in myutil.get_transcript_dates():
+            return False
+    if text_type in [1, 2]:
+        if date not in myutil.get_chat_dates():
+            return False
+    return True
+
+
+def limit_dataframe_rows(dataframe, rows_num):
+    return dataframe.head(rows_num)
+
+
+def get_df_of_timestamplink_text(date, text_style, range_s):
     radiolist = mysetting.load_RadioList()
     radio = radiolist.get_radio_in(date)
 
-    columns = ["timestamplink", "text"]
-    for_sort_columns = ["seconds"]
-    for_sort_ascending = [True]
+    columns = ["text_type", "timestamplink", "text"]
+    for_sort_columns = ["seconds", "texttype", "text_temp"]
+    for_sort_ascending = [True, True, True]
     table = []
-    if text_type in [0, 2]:
+    if text_style in [0, 2]:
         transcriptlist = mysetting.load_TranscriptList()
-        transctipt = transcriptlist.get_transcript_in(date)
-        for transcripttext in transctipt.texts:
+        transcript = transcriptlist.get_transcript_in(date)
+        for transcripttext in transcript.texts:
             if (range_s[0] <= transcripttext.start_s) & (transcripttext.end_s <= range_s[1]):
                 display_text = myutil.seconds_to_hms(transcripttext.start_s)
-                if text_type == 2:
-                    display_text = "書き起こし " + display_text
                 link = myutil.youtubeid_to_url(radio.get_id(), transcripttext.start_s)
-                row = [myutil.to_htmllink(display_text, link), transcripttext.text, transcripttext.start_s]
+                row = [myconfig.TRANSCRIPT_TYPE_EMOJI,
+                       myutil.to_htmllink(display_text, link),
+                       transcripttext.text,
+                       transcripttext.start_s,
+                       0,
+                       transcripttext.text]
                 table.append(row)
-    if text_type in [1, 2]:
+    if text_style in [1, 2]:
         chatlist = mysetting.load_ChatList()
         chat = chatlist.get_chat_in(date)
         for comment in chat.comments:
             if (range_s[0] <= comment.timestamp_s) & (comment.timestamp_s <= range_s[1]):
                 display_text = myutil.seconds_to_hms(comment.timestamp_s)
-                if text_type == 2:
-                    display_text = "チャット " + display_text
                 link = myutil.youtubeid_to_url(radio.get_id(), comment.timestamp_s)
-                text = comment.text
-                row = [myutil.to_htmllink(display_text, link), text, comment.timestamp_s]
+                text = comment.get_text(emojized=True)
+                row = [myconfig.CHAT_TYPE_EMOJI,
+                       myutil.to_htmllink(display_text, link),
+                       text,
+                       comment.timestamp_s,
+                       1,
+                       comment.text]
                 table.append(row)
     df = pd.DataFrame(table, columns=columns + for_sort_columns)
     df = df.sort_values(by=for_sort_columns, ascending=for_sort_ascending)

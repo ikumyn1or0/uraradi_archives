@@ -24,17 +24,17 @@ def set_uraradi_config():
 
 
 def load_RadioList_from_sessionstate():
-    if "radiolist__" not in st.session_state:
-        st.session_state.radiolist__ = mydata.RadioList()
-        print("radiolist__ loaded.")
-    return st.session_state.radiolist__
+    if "radiolist_temp" not in st.session_state:
+        st.session_state.radiolist_temp = mydata.RadioList()
+        print("radiolist_temp loaded.")
+    return st.session_state.radiolist_temp
 
 
 def load_TranscriptList_from_sessionstate():
-    if "transcriptlist__" not in st.session_state:
-        st.session_state.transcriptlist__ = mydata.TranscriptList()
-        print("transcriptlist__ loaded.")
-    return st.session_state.transcriptlist__
+    if "transcriptlist_temp" not in st.session_state:
+        st.session_state.transcriptlist_temp = mydata.TranscriptList()
+        print("transcriptlist_temp loaded.")
+    return st.session_state.transcriptlist_temp
 
 
 def show_tabs_for_graph_and_data():

@@ -15,6 +15,7 @@ flake8 = "*"
 ginza = "^5.1.2"
 ja-ginza = "^5.1.2"
 wordcloud = "^1.8.2.2"
+emoji = "^2.2.0"
 
 
 [build-system]

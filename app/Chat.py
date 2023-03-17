@@ -1,4 +1,5 @@
 import csv
+import emoji
 import dataclasses
 import os
 
@@ -11,6 +12,12 @@ import util as myutil
 class Comment:
     timestamp_s: int
     text: str
+
+    def get_text(self, emojized: bool = True):
+        if emojized:
+            return emoji.emojize(self.text)
+        else:
+            return self.text
 
 
 @dataclasses.dataclass()

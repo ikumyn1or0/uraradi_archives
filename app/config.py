@@ -20,6 +20,11 @@ PAGE_TITLE = "裏ラジアーカイブス"
 PAGE_ICON = "🦉"
 SITE_TITLE = "📻裏ラジアーカイブス🦉"
 
-TEXT_DATA_SELECTOR = {"書き起こしのみ": 0,
-                      "チャットのみ": 1,
-                      "両方": 2}
+TRANSCRIPT_TYPE_EMOJI = "🗣️"
+CHAT_TYPE_EMOJI = "💬"
+
+TEXT_DATA_SELECTOR = {f"{TRANSCRIPT_TYPE_EMOJI}：書き起こしのみ": 0,
+                      f"{CHAT_TYPE_EMOJI}：チャットのみ": 1,
+                      f"{TRANSCRIPT_TYPE_EMOJI}＆{CHAT_TYPE_EMOJI}：両方": 2}
+
+MAX_ROWS = 250
