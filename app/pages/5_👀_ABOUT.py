@@ -17,7 +17,7 @@ with tab_radio:
     st.subheader("裏ラジオウルナイトについて")
     md_text1 = """
 - 概ね金曜日25:00からYouTubeで放送中の深夜ラジオ。再生リストのリンクは[こちら](https://youtube.com/playlist?list=PLShwbdwZFm3r77Bwrr1quz2CpqJc6BZVL)。
-- パーソナリティは774inc.・有閑喫茶あにまーれ所属VTuberの[大浦るかこ](https://www.youtube.com/@Rukako_Oura)。
+- パーソナリティは、ななしいんく所属VTuberの[大浦るかこ](https://www.youtube.com/@Rukako_Oura)。
 - 2022年12月現在では、公式の切り抜き動画として、[深夜ラジオ総集編#01～#50](https://youtu.be/CdQnrusbXjs)がアップされている。
 - おおよそ月1回の頻度でゲストを呼んでおり、同じVTuberである[湖南みあ](https://www.youtube.com/@Mia_Konan)や[緋笠トモシカ](https://www.youtube.com/@-tomoshikahikasa-1255)などの他、動画投稿者である[ハヤシ](https://www.youtube.com/@HayashingElse)や[まだら牛](https://www.youtube.com/@madaraUsi)、歌手の[藍月なくる](https://www.youtube.com/@AitsukiNakuru)などが出演したことがある。（敬称略）
 - 放送時間はおよそ１時間半～２時間弱。
@@ -43,7 +43,7 @@ with tab_radio:
 with tab_oura:
     st.subheader("VTuber大浦るかこについて")
     md_text2 = """
-- 774inc.・有閑喫茶あにまーれ所属のVTuber。
+- ななしいんく所属のVTuber。（旧774inc.・有閑喫茶あにまーれ所属。）
 - 本人のアカウントとしては、[YouTube](https://www.youtube.com/@Rukako_Oura)と[Twitter](https://twitter.com/Rukako_Oura)がある。
 - 2021年2月7日にデビュー。同期には[湖南みあ](https://www.youtube.com/@Mia_Konan)、[月野木ちろる](https://www.youtube.com/@Tirol_Tsukinoki)がいる。
 - 誕生日は9月26日。有閑喫茶あにまーれでは経理を担当している。

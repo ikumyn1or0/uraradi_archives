@@ -9,7 +9,7 @@ mysetting.set_site_config()
 
 
 md_text1 = """
-本サイトは、774inc.・有閑喫茶あにまーれ所属VTuber[大浦るかこ](https://www.youtube.com/@Rukako_Oura)さんが、金曜日25時から放送中のラジオ「[裏ラジオウルナイト（裏ラジ）](https://youtube.com/playlist?list=PLShwbdwZFm3r77Bwrr1quz2CpqJc6BZVL)」に関する情報をまとめたファンサイトです。
+本サイトは、ななしいんく所属VTuber[大浦るかこ](https://www.youtube.com/@Rukako_Oura)さんが、金曜日25時から放送中のラジオ「[裏ラジオウルナイト（裏ラジ）](https://youtube.com/playlist?list=PLShwbdwZFm3r77Bwrr1quz2CpqJc6BZVL)」に関する情報をまとめたファンサイトです。
 
 文字起こしAIの[Whisper](https://openai.com/blog/whisper/)によるラジオの書き起こしテキストも利用できます。
 """
