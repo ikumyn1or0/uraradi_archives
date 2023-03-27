@@ -92,18 +92,20 @@ def title_to_number(title: str, date: str) -> list[str]:
     """
     ラジオタイトルと放送日付から放送回を抽出
     """
-    if date <= myconfig.LATEST_DATE_OF_TITLE_STYLE01:
+    if "【" in title:
         return title_to_number_stype01(title)
-    else:
+    elif "//" in title:
         return title_to_number_stype02(title)
+    else:
+        return " "
 
 
 def title_to_shortentitle_stype01(title: str) -> list[str]:
     """
-    ラジオタイトルからゲスト情報を抽出(期間1)
+    ラジオタイトルから短縮タイトルを抽出(期間1)
     """
     if title[0] != "【":
-        return title[0: 15]
+        return title[0: 8]
     else:
         title = title[title.find("】") + 1: title.rfind("【")]
         title = title.rstrip()
@@ -119,7 +121,7 @@ def title_to_shortentitle_stype01(title: str) -> list[str]:
 
 def title_to_shortentitle_stype02(title: str) -> list[str]:
     """
-    ラジオタイトルからゲスト情報を抽出(期間2)
+    ラジオタイトルから短縮タイトルを抽出(期間2)
     """
     return title[0: title.find("｜")]
 
@@ -128,10 +130,12 @@ def title_to_shortentitle(title: str, date: str) -> list[str]:
     """
     ラジオタイトルと放送日付から放送回を抽出
     """
-    if date <= myconfig.LATEST_DATE_OF_TITLE_STYLE01:
+    if "【" in title:
         return title_to_shortentitle_stype01(title)
-    else:
+    elif "//" in title:
         return title_to_shortentitle_stype02(title)
+    else:
+        return " "
 
 
 def seconds_to_hour(seconds: int) -> float:
