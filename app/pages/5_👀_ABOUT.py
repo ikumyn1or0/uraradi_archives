@@ -9,7 +9,6 @@ mysetting.set_site_config()
 
 st.header("👀ABOUT")
 
-
 tab_radio, tab_oura, tab_whisper, tab_site = st.tabs(["📻ラジオについて", "🦉大浦るかこについて", "🤖Whisperについて", "🔗本サイトについて"])
 
 
@@ -93,23 +92,23 @@ with tab_whisper:
 """
         st.markdown(md_text4)
 
-    st.subheader("このサイトにおけるWhisperの活用について")
-    md_text5 = """
-下に示す3つのgoogle colablatoryを実行することで、裏ラジプレイリスト全件の書き起こしデータを作成している。
+#     st.subheader("このサイトにおけるWhisperの活用について")
+#     md_text5 = """
+# 下に示す3つのgoogle colablatoryを実行することで、裏ラジプレイリスト全件の書き起こしデータを作成している。
 
-**STEP1 裏ラジプレイリストデータから必要な情報を抜き出したcsvファイルの作成**
+# **STEP1 裏ラジプレイリストデータから必要な情報を抜き出したcsvファイルの作成**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step1_playlist_to_csv.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step1_playlist_to_csv.ipynb)
 
-**STEP2 csvファイルから裏ラジ全件のmp3データをダウンロード**
+# **STEP2 csvファイルから裏ラジ全件のmp3データをダウンロード**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step2_csv_to_mp3.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step2_csv_to_mp3.ipynb)
 
-**STEP3 mp3データをWhisperによって書き起こし**
+# **STEP3 mp3データをWhisperによって書き起こし**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step3_mp3_to_transcript.ipynb)
-"""
-    st.markdown(md_text5)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ikumyn1or0/uraradi_archives/blob/master/notebook/step3_mp3_to_transcript.ipynb)
+# """
+#     st.markdown(md_text5)
 
 
 with tab_site:
