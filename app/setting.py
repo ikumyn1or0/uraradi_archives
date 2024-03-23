@@ -15,19 +15,16 @@ def set_site_config():
 def load_RadioList():
     if "radiolist" not in st.session_state:
         st.session_state.radiolist = myRadio.RadioList()
-        print("RadioList loaded.")
     return st.session_state.radiolist
 
 
 def load_TranscriptList():
     if "transcriptlist" not in st.session_state:
         st.session_state.transcriptlist = myTranscript.TranscriptList()
-        print("TranscriptList loaded.")
     return st.session_state.transcriptlist
 
 
 def load_ChatList():
     if "chatlist" not in st.session_state:
         st.session_state.chatlist = myChat.ChatList()
-        print("ChatList loaded.")
     return st.session_state.chatlist
