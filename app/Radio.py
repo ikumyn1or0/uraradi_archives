@@ -18,7 +18,7 @@ class Radio:
     def __post_init__(self):
         data_keys = []
         data_items = []
-        with open(os.path.join(myconfig.INPUT_PATH, myconfig.PLAYLIST_FILE)) as f:
+        with open(os.path.join(myconfig.INPUT_PATH, myconfig.PLAYLIST_FILE), encoding="utf-8") as f:
             reader = csv.reader(f)
             columns_name = []
             for index, playlist_row in enumerate(reader):

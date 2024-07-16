@@ -53,7 +53,7 @@ def get_transcripted_date() -> list[str]:
     csv_list = glob.glob("./input/transcript/*.csv")
     date_list = []
     for path_and_filename in csv_list:
-        filename = path_and_filename.split("/")[-1]
+        filename = path_and_filename.split("\\")[-1]
         date = filename.split(".")[0]
         date_list.append(date)
     return date_list
@@ -75,7 +75,7 @@ class RadioInfo:
 
     def __post_init__(self):
         csv_columns = []
-        with open(f"./input/{CSV_FILE}") as f:
+        with open(f"./input/{CSV_FILE}", encoding="utf-8") as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):
                 if i == 0:
@@ -161,7 +161,7 @@ class Transcript:
 
     def __post_init__(self):
         csv_columns = []
-        with open(f"./input/transcript/{self.date}.csv") as f:
+        with open(f"./input/transcript/{self.date}.csv", encoding="utf-8") as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):
                 if i == 0:

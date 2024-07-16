@@ -6,9 +6,9 @@ authors = ["ikumyn1or0 <19ming3@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9.15"
+python = "^3.9.13"
 pandas = "*"
-numpy = "*"
+numpy = "<2.0.0"
 streamlit = "*"
 plotly = "*"
 flake8 = "*"
@@ -16,6 +16,7 @@ ginza = "^5.1.2"
 ja-ginza = "^5.1.2"
 wordcloud = "^1.8.2.2"
 emoji = "^2.2.0"
+pyarrow = "<17.0.0"
 
 
 [build-system]

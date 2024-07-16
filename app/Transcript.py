@@ -20,7 +20,7 @@ class Transcript:
     texts: list[TranscriptText] = dataclasses.field(default_factory=list, init=False)
 
     def __post_init__(self):
-        with open(os.path.join(myconfig.TRANSCRIPT_PATH, f"{self.date}.csv")) as f:
+        with open(os.path.join(myconfig.TRANSCRIPT_PATH, f"{self.date}.csv"), encoding="utf-8") as f:
             reader = csv.reader(f)
             start_s_index = 0
             end_s_index = 0

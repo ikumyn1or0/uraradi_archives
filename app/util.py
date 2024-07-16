@@ -192,7 +192,7 @@ def is_clip(title: str) -> bool:
 
 def get_radio_dates() -> list[str]:
     date_list = []
-    with open(os.path.join(myconfig.INPUT_PATH, myconfig.PLAYLIST_FILE)) as f:
+    with open(os.path.join(myconfig.INPUT_PATH, myconfig.PLAYLIST_FILE), encoding="utf-8") as f:
         reader = csv.reader(f)
         columns_name = []
         for index, playlist_row in enumerate(reader):
@@ -208,7 +208,7 @@ def get_transcript_dates() -> list[str]:
     path_list = glob.glob(os.path.join(myconfig.TRANSCRIPT_PATH, "*.csv"))
     date_list = []
     for path in path_list:
-        filename = path.split("/")[-1]
+        filename = path.split("\\")[-1]
         date = filename.split(".")[0]
         date_list.append(date)
     return date_list
@@ -218,7 +218,7 @@ def get_chat_dates() -> list[str]:
     path_list = glob.glob(os.path.join(myconfig.CHAT_PATH, "*.csv"))
     date_list = []
     for path in path_list:
-        filename = path.split("/")[-1]
+        filename = path.split("\\")[-1]
         date = filename.split(".")[0]
         date_list.append(date)
     return date_list
