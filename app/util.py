@@ -208,7 +208,7 @@ def get_transcript_dates() -> list[str]:
     path_list = glob.glob(os.path.join(myconfig.TRANSCRIPT_PATH, "*.csv"))
     date_list = []
     for path in path_list:
-        filename = path.split("\\")[-1]
+        filename = path.split(os.sep)[-1]
         date = filename.split(".")[0]
         date_list.append(date)
     return date_list
@@ -218,7 +218,7 @@ def get_chat_dates() -> list[str]:
     path_list = glob.glob(os.path.join(myconfig.CHAT_PATH, "*.csv"))
     date_list = []
     for path in path_list:
-        filename = path.split("\\")[-1]
+        filename = path.split(os.sep)[-1]
         date = filename.split(".")[0]
         date_list.append(date)
     return date_list

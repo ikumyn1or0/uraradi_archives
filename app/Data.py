@@ -4,6 +4,7 @@ import datetime
 import glob
 import pandas as pd
 import re
+import os
 
 CSV_FILE = "playlist_裏ラジオウルナイト.csv"
 
@@ -53,7 +54,7 @@ def get_transcripted_date() -> list[str]:
     csv_list = glob.glob("./input/transcript/*.csv")
     date_list = []
     for path_and_filename in csv_list:
-        filename = path_and_filename.split("\\")[-1]
+        filename = path_and_filename.split(os.sep)[-1]
         date = filename.split(".")[0]
         date_list.append(date)
     return date_list
