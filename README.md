@@ -23,6 +23,6 @@
 
 ## 依存関係の固定
 
-- Streamlit Community Cloudは`requirements.txt`を`pyproject.toml`より優先して読み込むため、本番環境のバージョンは`requirements.txt`で全パッケージ固定している(Python 3.10で動作確認済み)
+- Streamlit Community Cloudは`requirements.txt`を`pyproject.toml`より優先して読み込むため、本番環境のバージョンは`requirements.txt`で全パッケージ固定している(Python 3.10・3.12で動作確認済み、本番は3.12)
 - ローカル環境は`poetry.lock`で固定している(Python 3.9)
 - パッケージを更新する場合は、表示が変わらないことを確認したうえで両方を更新すること
